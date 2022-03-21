@@ -74,6 +74,7 @@ TAG_FORMAT | `v*` | Format of the git tag, `[*]` gets replaced with actual versi
 NUGET_KEY | | API key to authenticate with NuGet server
 NUGET_SOURCE | `https://api.nuget.org` | NuGet server uri hosting the packages, defaults to https://api.nuget.org
 INCLUDE_SYMBOLS | `false` | Flag to toggle pushing symbols along with nuget package to the server, disabled by default
+TEST_PROJECT_FILE_PATH | | If provided, runs tests after building the solution
 
 ## Outputs
 

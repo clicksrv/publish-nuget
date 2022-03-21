@@ -7,6 +7,7 @@ const os = require("os"),
 class Action {
     constructor() {
         this.projectFile = process.env.INPUT_PROJECT_FILE_PATH
+        this.testProjectFile = process.env.TEST_PROJECT_FILE_PATH
         this.packageName = process.env.INPUT_PACKAGE_NAME || process.env.PACKAGE_NAME
         this.versionFile = process.env.INPUT_VERSION_FILE_PATH || process.env.VERSION_FILE_PATH || this.projectFile
         this.versionRegex = new RegExp(process.env.INPUT_VERSION_REGEX || process.env.VERSION_REGEX, "m")
@@ -19,7 +20,7 @@ class Action {
     }
 
     _printErrorAndExit(msg) {
-        console.log(`##[error]😭 ${msg}`)
+        console.log(`##[ERR] ${msg}`)
         throw new Error(msg)
     }
 
@@ -49,7 +50,7 @@ class Action {
         console.log(`✨ found new version (${version}) of ${name}`)
 
         if (!this.nugetKey) {
-            console.log("##[warning]😢 NUGET_KEY not given")
+            console.log("##[WARN] NUGET_KEY not given")
             return
         }
 
@@ -58,7 +59,10 @@ class Action {
         fs.readdirSync(".").filter(fn => /\.s?nupkg$/.test(fn)).forEach(fn => fs.unlinkSync(fn))
 
         this._executeInProcess(`dotnet build -c Release ${this.projectFile}`)
-
+        
+        if (this.testProjectFile)
+            this._executeInProcess(`dotnet test ${this.testProjectFile}`)
+        
         this._executeInProcess(`dotnet pack ${this.includeSymbols ? "--include-symbols -p:SymbolPackageFormat=snupkg" : ""} --no-build -c Release ${this.projectFile} -o .`)
 
         const packages = fs.readdirSync(".").filter(fn => fn.endsWith("nupkg"))

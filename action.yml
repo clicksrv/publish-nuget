@@ -6,6 +6,9 @@ inputs:
     PROJECT_FILE_PATH:
         description: Filepath of the project to be packaged, relative to root of repository
         required: true
+    TEST_PROJECT_FILE_PATH:
+        description: Filepath of the test project to be run, relative to root of repository
+        required: false
     PACKAGE_NAME:
         description: NuGet package id, used for version detection & defaults to project name
         required: false

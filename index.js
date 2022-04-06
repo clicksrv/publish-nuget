@@ -17,6 +17,7 @@ class Action {
         this.nugetKey = process.env.INPUT_NUGET_KEY || process.env.NUGET_KEY
         this.nugetSource = process.env.INPUT_NUGET_SOURCE || process.env.NUGET_SOURCE
         this.includeSymbols = JSON.parse(process.env.INPUT_INCLUDE_SYMBOLS || process.env.INCLUDE_SYMBOLS)
+        this.signingCert = JSON.parse(process.env.SIGNING_CERT_FILE_NAME || process.env.SIGNING_CERT_FILE_NAME)
     }
 
     _printErrorAndExit(msg) {
@@ -68,6 +69,9 @@ class Action {
         const packages = fs.readdirSync(".").filter(fn => fn.endsWith("nupkg"))
         console.log(`Generated Package(s): ${packages.join(", ")}`)
 
+        if (this.signingCert)
+            this._executeInProcess(`dotnet nuget sign *.nupkg -CertificatePath ${this.signingCert} -Timestamper http://timestamp.digicert.com`)
+        
         const pushCmd = `dotnet nuget push *.nupkg -s ${this.nugetSource}/v3/index.json -k ${this.nugetKey} --skip-duplicate${!this.includeSymbols ? " -n 1" : ""}`,
             pushOutput = this._executeCommand(pushCmd, { encoding: "utf-8" }).stdout
 

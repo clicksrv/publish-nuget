@@ -41,6 +41,9 @@ inputs:
         description: Flag to toggle pushing symbols along with nuget package to the server, disabled by default
         required: false
         default: false
+    SIGNING_CERT:
+        description: Certificate to sign the package before upload
+        required: false
 
 outputs:
     VERSION:

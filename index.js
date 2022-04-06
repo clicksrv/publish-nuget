@@ -7,7 +7,6 @@ const os = require("os"),
 class Action {
     constructor() {
         this.projectFile = process.env.INPUT_PROJECT_FILE_PATH
-        this.testProjectFile = process.env.TEST_PROJECT_FILE_PATH
         this.packageName = process.env.INPUT_PACKAGE_NAME || process.env.PACKAGE_NAME
         this.versionFile = process.env.INPUT_VERSION_FILE_PATH || process.env.VERSION_FILE_PATH || this.projectFile
         this.versionRegex = new RegExp(process.env.INPUT_VERSION_REGEX || process.env.VERSION_REGEX, "m")
@@ -17,7 +16,7 @@ class Action {
         this.nugetKey = process.env.INPUT_NUGET_KEY || process.env.NUGET_KEY
         this.nugetSource = process.env.INPUT_NUGET_SOURCE || process.env.NUGET_SOURCE
         this.includeSymbols = JSON.parse(process.env.INPUT_INCLUDE_SYMBOLS || process.env.INCLUDE_SYMBOLS)
-        this.signingCert = JSON.parse(process.env.SIGNING_CERT_FILE_NAME || process.env.SIGNING_CERT_FILE_NAME)
+        this.signingCert = process.env.SIGNING_CERT_FILE_NAME
     }
 
     _printErrorAndExit(msg) {

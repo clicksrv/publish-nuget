@@ -42,7 +42,7 @@ inputs:
         required: false
         default: false
     SIGNING_CERT_FILE_NAME:
-        description: Certificate to sign the package before upload
+        description: Certificate file name (should be in root folder) to sign the package before upload
         required: false
 
 outputs:
